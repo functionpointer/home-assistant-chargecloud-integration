@@ -1,0 +1,13 @@
+{
+  "domain": "chargecloud",
+  "name": "chargecloud",
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/chargecloud",
+  "requirements": ["pychargecloud==0.0.3"],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": ["@functionpointer"],
+  "iot_class": "cloud_polling"
+}
