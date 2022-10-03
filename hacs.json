@@ -1,0 +1,7 @@
+{
+    "name": "Chargecloud.de",
+    "render_readme": true,
+    "domains": [
+        "sensor"
+    ]
+}
