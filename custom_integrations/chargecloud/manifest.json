@@ -2,12 +2,14 @@
   "domain": "chargecloud",
   "name": "chargecloud",
   "config_flow": true,
-  "documentation": "https://www.home-assistant.io/integrations/chargecloud",
+  "documentation": "https://github.com/functionpointer/home-assistant-chargecloud-integration",
+  "issue_tracker": "https://github.com/functionpointer/home-assistant-chargecloud-integration/issues",
   "requirements": ["pychargecloud==0.0.3"],
   "ssdp": [],
   "zeroconf": [],
   "homekit": {},
   "dependencies": [],
   "codeowners": ["@functionpointer"],
-  "iot_class": "cloud_polling"
+  "iot_class": "cloud_polling",
+  "version": "0.0.1"
 }
