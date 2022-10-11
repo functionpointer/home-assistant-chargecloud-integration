@@ -13,7 +13,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN, UPDATE_INTERVAL, EvseId
-
+import traceback
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[Platform] = [Platform.SENSOR]
@@ -70,4 +70,4 @@ class ChargeCloudDataUpdateCoordinator(DataUpdateCoordinator):
             async with async_timeout.timeout(10):
                 return await self.api.location_by_evse_id(self.evse_id)
         except Exception as err:
-            raise UpdateFailed(f"Error communicating with API: {err}") from err
+            raise UpdateFailed(f"Error communicating with API: {''.join(traceback.format_exception(err))}") from err
