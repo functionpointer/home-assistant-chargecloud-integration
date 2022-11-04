@@ -2,3 +2,6 @@
 
 Chargecloud.de integration
 ==========================
+
+Reads real-time availability status of public EV chargers from chargecloud.de api.
+To install, simply use HACS. Then add an integration and select chargecloud. It will ask you for the EVSE-ID you want to monitor.
