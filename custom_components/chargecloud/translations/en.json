@@ -6,14 +6,12 @@
         "error": {
             "cannot_connect": "Failed to connect",
             "malformed_evse_id": "Malformed EVSE-ID",
-            "empty_response": "Empty reponse. Check EVSE-ID.",
-            "evse_not_found": "EVSE not found in response.",
+            "empty_response": "Empty reponse from chargecloud.de. Either invalid EVSE-ID or no data for it.",
             "unknown": "Unexpected error"
         },
         "step": {
             "user": {
                 "data": {
-                    "base_url": "API base url (leave empty for default)",
                     "evse_id": "EVSE-ID (e.g. DECCH*ECCH1800155EBG*2)"
                 }
             }

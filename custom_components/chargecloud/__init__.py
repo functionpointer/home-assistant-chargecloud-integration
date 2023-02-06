@@ -57,17 +57,22 @@ class ChargeCloudDataUpdateCoordinator(DataUpdateCoordinator):
         )
         self.api = api
         self.evse_id = evse_id
+        self.smart_call_data: chargecloudapi.SmartCallData | None = None
 
-    async def _async_update_data(self) -> list[chargecloudapi.Location]:
+    async def _async_update_data(self) -> chargecloudapi.Location | None:
         """Fetch data from API endpoint.
 
         This is the place to pre-process the data to lookup tables
         so entities can quickly look up their data.
         """
-        try:
+        #try:
             # Note: asyncio.TimeoutError and aiohttp.ClientError are already
             # handled by the data update coordinator.
-            async with async_timeout.timeout(10):
-                return await self.api.location_by_evse_id(self.evse_id)
-        except Exception as err:
-            raise UpdateFailed(f"Error communicating with API: {err}") from err
+        async with async_timeout.timeout(10):
+            location, smart_call_data = await self.api.perform_smart_api_call(self.evse_id, self.smart_call_data)
+            self.smart_call_data = smart_call_data
+            if location is None:
+                _LOGGER.info("received empty update")
+            return location
+        #except Exception as err:
+        #    raise UpdateFailed(f"Error communicating with API: {err}") from err

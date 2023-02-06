@@ -59,11 +59,13 @@ class ChargeCloudRealtimeSensor(
         # read data from coordinator, which should have data by now
         self._read_coordinator_data()
 
-    def _get_location(self) -> Location:
-        for location in self.coordinator.data:
+    def _get_location(self) -> Location | None:
+        if self.coordinator.data:
+            location = self.coordinator.data
             for evse in location.evses:
                 if evse.id == self.evse_id:
                     return location
+        return None
 
     def _get_evse(self) -> chargecloudapi.Evse:
         for evse in self._get_location().evses:
@@ -94,6 +96,7 @@ class ChargeCloudRealtimeSensor(
             "country": location.country,
             "lat": location.coordinates.latitude,
             "lon": location.coordinates.longitude,
+            "update_opid": self.coordinator.smart_call_data.operator_id.name if self.coordinator.smart_call_data else None,
             "connectors": [
                 {
                     "power_type": connector.power_type,

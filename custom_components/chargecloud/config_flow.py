@@ -22,7 +22,6 @@ _LOGGER = logging.getLogger(__name__)
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required("evse_id"): str,
-        vol.Optional("base_url"): str,
     }
 )
 
@@ -30,14 +29,14 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 def evse_id(value: str) -> str:
     """Verify evse_id is syntactically correct."""
     match = re.fullmatch(
-        r"^([A-Z]+)\*([A-Z0-9]+)\*([A-Z0-9]*)(?:\*([A-Z0-9]+))?$", value
+        r"^([A-Z]+)\*?([A-Z0-9]+)\*?([A-Z0-9]*)(?:\*?([A-Z0-9]+))?$", value
     )
     if match is None:
-        raise vol.Invalid(message="malformed evse")
+        raise vol.Invalid(message="malformed evse-id")
     return value
 
 
-async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> None:
+async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
     """Validate the user input allows us to connect.
 
     Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
@@ -48,18 +47,20 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> None:
         raise MalformedEvseId() from exc
 
     api = chargecloudapi.Api(
-        websession=async_get_clientsession(hass), base_url=data.get("base_url")
+        websession=async_get_clientsession(hass)
     )
     try:
-        locations = await api.location_by_evse_id(data["evse_id"])
+        location, _ = await api.perform_smart_api_call(data["evse_id"], None)
     except Exception as exc:
         raise CannotConnect(exc) from exc
 
-    if len(locations) == 0:
+    if not location:
         raise EmptyResponse()
 
-    if locations[0].evses[0].id != data["evse_id"]:
-        raise NotFoundException()
+    if location.evses[0].id != data["evse_id"]:
+        data["evse_id"] = location.evses[0].id
+
+    return data
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -81,15 +82,16 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_abort(reason="already_configured")
 
         try:
-            await validate_input(self.hass, user_input)
+            user_input = await validate_input(self.hass, user_input)
         except CannotConnect:
             errors["base"] = "cannot_connect"
         except MalformedEvseId:
             errors["evse_id"] = "malformed_evse_id"
         except EmptyResponse:
             errors["base"] = "empty_response"
-        except NotFoundException:
-            errors["base"] = "evse_not_found"
+        except FoundDifferentEvseId as instead:
+            errors["base"] = "found_different_evse"
+            user_input["evse_id"] = instead.instead
         except Exception:  # pylint: disable=broad-except
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
@@ -118,7 +120,3 @@ class EmptyResponse(HomeAssistantError):
 
 class MalformedEvseId(HomeAssistantError):
     """Error to indicate a syntactically wrong evse-id."""
-
-
-class NotFoundException(HomeAssistantError):
-    """Error to indicate the evse-id was not found on the api."""
