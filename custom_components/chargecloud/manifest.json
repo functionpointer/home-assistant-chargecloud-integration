@@ -5,6 +5,7 @@
   "documentation": "https://github.com/functionpointer/home-assistant-chargecloud-integration",
   "issue_tracker": "https://github.com/functionpointer/home-assistant-chargecloud-integration/issues",
   "requirements": ["pychargecloud==0.1.0"],
+  "integration_type": "device",
   "ssdp": [],
   "zeroconf": [],
   "homekit": {},

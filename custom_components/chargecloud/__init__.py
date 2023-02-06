@@ -13,7 +13,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN, UPDATE_INTERVAL, EvseId
-
+import traceback
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[Platform] = [Platform.SENSOR]
@@ -65,14 +65,11 @@ class ChargeCloudDataUpdateCoordinator(DataUpdateCoordinator):
         This is the place to pre-process the data to lookup tables
         so entities can quickly look up their data.
         """
-        #try:
-            # Note: asyncio.TimeoutError and aiohttp.ClientError are already
-            # handled by the data update coordinator.
+        # Note: asyncio.TimeoutError and aiohttp.ClientError are already
+        # handled by the data update coordinator.
         async with async_timeout.timeout(10):
             location, smart_call_data = await self.api.perform_smart_api_call(self.evse_id, self.smart_call_data)
             self.smart_call_data = smart_call_data
             if location is None:
                 _LOGGER.info("received empty update")
             return location
-        #except Exception as err:
-        #    raise UpdateFailed(f"Error communicating with API: {err}") from err
