@@ -1,16 +1,16 @@
 {
-  "domain": "chargecloud",
-  "name": "chargecloud",
-  "config_flow": true,
-  "documentation": "https://github.com/functionpointer/home-assistant-chargecloud-integration",
-  "issue_tracker": "https://github.com/functionpointer/home-assistant-chargecloud-integration/issues",
-  "requirements": ["pychargecloud==0.1.0"],
-  "integration_type": "device",
-  "ssdp": [],
-  "zeroconf": [],
-  "homekit": {},
-  "dependencies": [],
   "codeowners": ["@functionpointer"],
+  "config_flow": true,
+  "dependencies": [],
+  "domain": "chargecloud",
+  "documentation": "https://github.com/functionpointer/home-assistant-chargecloud-integration",
+  "homekit": {},
+  "integration_type": "device",
   "iot_class": "cloud_polling",
-  "version": "0.0.1"
+  "issue_tracker": "https://github.com/functionpointer/home-assistant-chargecloud-integration/issues",
+  "name": "chargecloud",
+  "requirements": ["pychargecloud==0.1.0"],
+  "ssdp": [],
+  "version": "0.0.1",
+  "zeroconf": []
 }
