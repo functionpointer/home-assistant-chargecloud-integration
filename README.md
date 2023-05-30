@@ -1,6 +1,6 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
-![chargecloud_logo](https://brands.home-assistant.io/_/[domain]/logo@2x.png)
+![chargecloud_logo](https://brands.home-assistant.io/_/chargecloud/logo@2x.png)
 
 Chargecloud.de integration
 ==========================
