@@ -1,10 +1,12 @@
 """Platform for sensor integration."""
 from __future__ import annotations
 
+import typing
+
 import chargecloudapi
 from chargecloudapi import Location
 
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
@@ -48,7 +50,7 @@ class ChargeCloudRealtimeSensor(
         self.coordinator = coordinator
         self._attr_unique_id = f"{evse_id}-realtime"
         self._attr_attribution = "chargecloud.de"
-        self._attr_device_class = None
+        self._attr_device_class = SensorDeviceClass.ENUM
         self._attr_native_unit_of_measurement = None
         self._attr_state_class = None
         self._attr_device_info = DeviceInfo(
@@ -56,6 +58,7 @@ class ChargeCloudRealtimeSensor(
             identifiers={(DOMAIN, self.evse_id)},
             entry_type=None,
         )
+        self._attr_options = list(typing.get_args(chargecloudapi.Status))
         # read data from coordinator, which should have data by now
         self._read_coordinator_data()
 
@@ -96,7 +99,9 @@ class ChargeCloudRealtimeSensor(
             "country": location.country,
             "lat": location.coordinates.latitude,
             "lon": location.coordinates.longitude,
-            "update_opid": self.coordinator.smart_call_data.operator_id.name if self.coordinator.smart_call_data else None,
+            "update_opid": self.coordinator.smart_call_data.operator_id.name
+            if self.coordinator.smart_call_data
+            else None,
             "connectors": [
                 {
                     "power_type": connector.power_type,
