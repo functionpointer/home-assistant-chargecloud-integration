@@ -11,6 +11,6 @@
   "issue_tracker": "https://github.com/functionpointer/home-assistant-chargecloud-integration/issues",
   "requirements": ["pychargecloud==0.1.0"],
   "ssdp": [],
-  "version": "0.0.1",
+  "version": "1.1.0",
   "zeroconf": []
 }
