@@ -1,0 +1,20 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Equipamento já configurado"
+        },
+        "error": {
+            "cannot_connect": "Falha na ligação",
+            "malformed_evse_id": "Formato incorrecto do EVSE-ID",
+            "empty_response": "Respostas vazias de  chargecloud.de. Dados invalidos do  EVSE-ID ou sem dados.",
+            "unknown": "Erro desconhecido"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "evse_id": "EVSE-ID (exemplo DECCH*ECCH1800155EBG*2)"
+                }
+            }
+        }
+    }
+}
