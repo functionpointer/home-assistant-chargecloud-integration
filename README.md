@@ -5,8 +5,8 @@
 Chargecloud.de integration
 ==========================
 
-Chargecloud.de offers Software for public EV chargers.
-It used by Ladenetz.de and other charging networks in europe.
+[Chargecloud.de](https://www.chargecloud.de/) offers software for public EV chargers.
+It used by [ladenetz.de](https://ladenetz.de/) and other charging networks in europe.
 
 This integration reads real-time availability status of public EV chargers from chargecloud.de's api.
 To install, simply use HACS. Then add an integration and select chargecloud. It will ask you for the EVSE-ID you want to monitor.
