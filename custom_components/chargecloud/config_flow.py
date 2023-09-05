@@ -29,7 +29,8 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 def evse_id(value: str) -> str:
     """Verify evse_id is syntactically correct."""
     match = re.fullmatch(
-        r"^([A-Z]+)\*?([A-Z0-9]+)\*?([A-Z0-9]*)(?:\*?([A-Z0-9]+))?$", value
+        r"^(([A-Z]{2}\*?[A-Z0-9]{3}\*?E[A-Z0-9\*]{1,30})|(\+?[0-9]{1,3}\*[0-9]{3}\*[0-9\*]{1,32}))$",
+        value,
     )
     if match is None:
         raise vol.Invalid(message="malformed evse-id")
@@ -46,12 +47,11 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     except vol.Invalid as exc:
         raise MalformedEvseId() from exc
 
-    api = chargecloudapi.Api(
-        websession=async_get_clientsession(hass)
-    )
+    api = chargecloudapi.Api(websession=async_get_clientsession(hass))
     try:
         location, _ = await api.perform_smart_api_call(data["evse_id"], None)
     except Exception as exc:
+        _LOGGER.exception(f"validate_info failed", exc)
         raise CannotConnect(exc) from exc
 
     if not location:
@@ -96,6 +96,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
         else:
+            if await self.is_duplicate(user_input):
+                return self.async_abort(reason="already_configured")
             return self.async_create_entry(title=user_input["evse_id"], data=user_input)
 
         return self.async_show_form(
