@@ -104,6 +104,8 @@ class ChargeCloudRealtimeSensor(
             else None,
             "connectors": [
                 {
+                    "id": connector.id,
+                    "status": connector.status,
                     "power_type": connector.power_type,
                     "ampere": connector.ampere,
                     "voltage": connector.voltage,
