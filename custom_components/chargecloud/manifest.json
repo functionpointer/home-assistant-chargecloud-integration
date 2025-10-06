@@ -9,8 +9,8 @@
   "integration_type": "device",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/functionpointer/home-assistant-chargecloud-integration/issues",
-  "requirements": ["pychargecloud==0.2.5"],
+  "requirements": ["pychargecloud==0.2.6"],
   "ssdp": [],
-  "version": "1.2.4",
+  "version": "1.2.5",
   "zeroconf": []
 }
