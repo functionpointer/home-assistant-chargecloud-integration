@@ -97,8 +97,8 @@ class ChargeCloudRealtimeSensor(
             "city": location.city,
             "postal_code": location.postal_code,
             "country": location.country,
-            "lat": location.coordinates.latitude,
-            "lon": location.coordinates.longitude,
+            "latitude": location.coordinates.latitude,
+            "longitude": location.coordinates.longitude,
             "update_opid": self.coordinator.smart_call_data.operator_id.name
             if self.coordinator.smart_call_data
             else None,
